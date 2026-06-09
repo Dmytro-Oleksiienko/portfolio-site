@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile.name }} — Portfolio</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #0a0a0a;
+            color: #e2e8f0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            min-height: 100vh;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        /* NAV */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 48px;
+            border-bottom: 0.5px solid #1e1e1e;
+            position: sticky;
+            top: 0;
+            background: #0a0a0a;
+            z-index: 100;
+        }
+        .nav-logo { font-size: 15px; font-weight: 600; color: #fff; }
+        .nav-logo span { color: #4ade80; }
+        .nav-links { display: flex; gap: 28px; }
+        .nav-links a { font-size: 13px; color: #555; transition: color 0.2s; }
+        .nav-links a:hover { color: #4ade80; }
+
+        /* HERO */
+        .hero {
+            display: flex;
+            gap: 36px;
+            align-items: flex-start;
+            padding: 52px 48px;
+            border-bottom: 0.5px solid #1a1a1a;
+        }
+        .avatar {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            border: 2px solid #4ade80;
+            background: #1c3326;
+            flex-shrink: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .avatar-placeholder { font-size: 42px; color: #4ade80; }
+        .hero-text { flex: 1; }
+        .available-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: #4ade80;
+            background: #0e1c13;
+            border: 0.5px solid #1c3326;
+            border-radius: 20px;
+            padding: 4px 12px;
+            margin-bottom: 12px;
+        }
+        .available-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4ade80;
+        }
+        .hero h1 { font-size: 28px; font-weight: 500; color: #f0f0f0; margin-bottom: 6px; }
+        .hero .role { font-size: 14px; color: #4ade80; margin-bottom: 10px; }
+        .hero .bio { font-size: 13px; color: #666; line-height: 1.7; max-width: 480px; margin-bottom: 20px; }
+        .hero-btns { display: flex; gap: 10px; }
+        .btn-primary {
+            font-size: 12px;
+            padding: 9px 20px;
+            border-radius: 4px;
+            background: #4ade80;
+            color: #071209;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-secondary {
+            font-size: 12px;
+            padding: 9px 20px;
+            border-radius: 4px;
+            background: transparent;
+            color: #555;
+            border: 0.5px solid #252525;
+            cursor: pointer;
+        }
+
+        /* CONTACTS BAR */
+        .contacts-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-bottom: 0.5px solid #1a1a1a;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 24px;
+            border-right: 0.5px solid #1a1a1a;
+            transition: background 0.2s;
+        }
+        .contact-item:last-child { border-right: none; }
+        .contact-item:hover { background: #111; }
+        .contact-item i { font-size: 16px; color: #4ade80; }
+        .contact-label { font-size: 10px; color: #333; letter-spacing: 0.08em; margin-bottom: 2px; }
+        .contact-val { font-size: 12px; color: #777; }
+
+        /* GRID ROW */
+        .grid-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 0.5px solid #1a1a1a;
+        }
+        .cell {
+            padding: 28px 32px;
+        }
+        .cell + .cell { border-left: 0.5px solid #1a1a1a; }
+        .cell-label {
+            font-size: 10px;
+            color: #333;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+        }
+
+        /* SKILLS */
+        .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+        .chip {
+            font-size: 12px;
+            padding: 5px 12px;
+            border-radius: 4px;
+            background: #151515;
+            border: 0.5px solid #1e1e1e;
+            color: #666;
+        }
+
+        /* PROJECTS */
+        .project-list { display: flex; flex-direction: column; gap: 8px; }
+        .project-card {
+            background: #161616;
+            border: 0.5px solid #1e1e1e;
+            border-radius: 6px;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: border-color 0.2s;
+        }
+        .project-card:hover { border-color: #2a2a2a; }
+        .project-name { font-size: 13px; font-weight: 500; color: #ccc; margin-bottom: 4px; }
+        .project-tags { font-size: 11px; color: #4ade80; }
+        .project-card i { font-size: 15px; color: #333; }
+
+        /* EXPERIENCE */
+        .exp-list { display: flex; flex-direction: column; gap: 16px; }
+        .exp-item { display: flex; gap: 14px; }
+        .exp-year { font-size: 11px; color: #333; min-width: 40px; padding-top: 2px; }
+        .exp-title { font-size: 13px; color: #bbb; margin-bottom: 3px; font-weight: 500; }
+        .exp-sub { font-size: 12px; color: #555; }
+
+        /* FOOTER */
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 48px;
+            border-top: 0.5px solid #1a1a1a;
+        }
+        .footer-text { font-size: 11px; color: #2a2a2a; }
+        .footer-icons { display: flex; gap: 18px; }
+        .footer-icons a i { font-size: 17px; color: #333; transition: color 0.2s; }
+        .footer-icons a:hover i { color: #4ade80; }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <span class="nav-logo">{{ profile.name|lower|cut:" " }}<span>.</span></span>
+    <div class="nav-links">
+        <a href="#about">about</a>
+        <a href="#skills">skills</a>
+        <a href="#projects">projects</a>
+        <a href="#contact">contact</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="about">
+    <div class="avatar">
+        {% if profile.photo %}
+            <img src="{{ profile.photo.url }}" alt="{{ profile.name }}">
+        {% else %}
+            <i class="ti ti-user avatar-placeholder"></i>
+        {% endif %}
+    </div>
+    <div class="hero-text">
+        {% if profile.is_avalible %}
+        <div class="available-badge">
+            <div class="dot"></div>
+            Available for work
+        </div>
+        {% endif %}
+        <h1>{{ profile.name }}</h1>
+        <p class="role">{{ profile.role }}</p>
+        <p class="bio">{{ profile.bio }}</p>
+        <div class="hero-btns">
+            {% if profile.cv_file %}
+            <a href="{{ profile.cv_file.url }}" download>
+                <button class="btn-primary">
+                    <i class="ti ti-download"></i> Download CV
+                </button>
+            </a>
+            {% endif %}
+            <a href="#contact">
+                <button class="btn-secondary">Contact me</button>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACTS BAR -->
+<div class="contacts-bar" id="contact">
+    <a href="mailto:{{ profile.email }}" class="contact-item">
+        <i class="ti ti-mail"></i>
+        <div>
+            <p class="contact-label">EMAIL</p>
+            <p class="contact-val">{{ profile.email }}</p>
+        </div>
+    </a>
+    <a href="{{ profile.github }}" target="_blank" class="contact-item">
+        <i class="ti ti-brand-github"></i>
+        <div>
+            <p class="contact-label">GITHUB</p>
+            <p class="contact-val">{{ profile.github|cut:"https://" }}</p>
+        </div>
+    </a>
+    <a href="{{ profile.linkedin }}" target="_blank" class="contact-item">
+        <i class="ti ti-brand-linkedin"></i>
+        <div>
+            <p class="contact-label">LINKEDIN</p>
+            <p class="contact-val">{{ profile.linkedin|cut:"https://" }}</p>
+        </div>
+    </a>
+    <div class="contact-item">
+        <i class="ti ti-map-pin"></i>
+        <div>
+            <p class="contact-label">LOCATION</p>
+            <p class="contact-val">{{ profile.location }}</p>
+        </div>
+    </div>
+</div>
+
+<!-- SKILLS + EXPERIENCE -->
+<div class="grid-row">
+    <div class="cell" id="skills">
+        <p class="cell-label">TECHNOLOGIES</p>
+        <div class="chips">
+            {% for skill in skills %}
+                <span class="chip">{{ skill.name }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="cell">
+        <p class="cell-label">EXPERIENCE</p>
+        <div class="exp-list">
+            {% for exp in experience %}
+            <div class="exp-item">
+                <span class="exp-year">{{ exp.start_year }}</span>
+                <div>
+                    <p class="exp-title">{{ exp.name }}</p>
+                    <p class="exp-sub">{{ exp.faculty }} {% if exp.department %}· {{ exp.department }}{% endif %}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- PROJECTS -->
+<div class="cell" style="border-bottom: 0.5px solid #1a1a1a; padding: 28px 32px;" id="projects">
+    <p class="cell-label">PROJECTS</p>
+    <div class="project-list">
+        {% for project in projects %}
+        <div class="project-card">
+            <div>
+                <p class="project-name">{{ project.name }}</p>
+                <p class="project-tags">{{ project.tagline }}</p>
+            </div>
+            {% if project.gitlink %}
+            <a href="{{ project.gitlink }}" target="_blank">
+                <i class="ti ti-arrow-up-right"></i>
+            </a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <span class="footer-text">built with Django</span>
+    <div class="footer-icons">
+        <a href="{{ profile.github }}" target="_blank"><i class="ti ti-brand-github"></i></a>
+        <a href="{{ profile.linkedin }}" target="_blank"><i class="ti ti-brand-linkedin"></i></a>
+        <a href="mailto:{{ profile.email }}"><i class="ti ti-mail"></i></a>
+    </div>
+</footer>
+
+</body>
+</html>
