@@ -78,7 +78,7 @@
         .chip { font-size: 12px; padding: 4px 12px; border-radius: 4px; background: #151515; border: 0.5px solid #252525; color: #888; }
         .exp-list { display: flex; flex-direction: column; gap: 12px; }
         .exp-item { display: flex; gap: 12px; }
-        .exp-year { font-size: 11px; color: #444; min-width: 36px; padding-top: 2px; }
+        .exp-year { font-size: 11px; color: #444; min-width: 75px; padding-top: 2px; white-space: nowrap; }
         .exp-title { font-size: 13px; color: #bbb; margin-bottom: 2px; font-weight: 500; }
         .exp-sub { font-size: 11px; color: #555; }
 
@@ -274,7 +274,7 @@
         <div class="exp-list">
             {% for exp in experience %}
             <div class="exp-item">
-                <span class="exp-year">{{ exp.start_year }}</span>
+                <span class="exp-year">{{ exp.start_year }} &mdash; {{ exp.end_year }}</span>
                 <div>
                     <p class="exp-title">{{ exp.name }}</p>
                     <p class="exp-sub">{{ exp.faculty }}{% if exp.department %} · {{ exp.department }}{% endif %}</p>
