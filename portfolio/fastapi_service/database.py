@@ -1,7 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
+import os
 
-DATABASE_URL = "sqlite:///./fastapi_service/contacts.db"
+DATABASE_URL = os.environ.get(
+    "DATABASE_URL",
+    "postgresql://localhost:5432/portfolio"
+)
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)

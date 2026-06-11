@@ -46,3 +46,19 @@ class Experience(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class ContactMessage(models.Model):
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    message = models.TextField()
+    created_at = models.DateTimeField()
+
+    class Meta:
+        db_table = 'messages'
+        managed = False  # Tells Django not to create this table, as FastAPI manages it
+        verbose_name = 'Contact Message'
+        verbose_name_plural = 'Contact Messages'
+
+    def __str__(self):
+        return f"Message from {self.name} ({self.email})"

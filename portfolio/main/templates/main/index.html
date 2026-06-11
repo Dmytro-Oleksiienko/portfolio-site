@@ -326,4 +326,54 @@ function openModal() {
 }
 function closeModal() {
     document.getElementById('modal').classList.remove('open');
-    document.body.style.overflow =
+    document.body.style.overflow = '';
+}
+
+// Close modal on overlay click
+document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+});
+
+async function sendMessage() {
+    const name = document.getElementById('cf-name').value.trim();
+    const email = document.getElementById('cf-email').value.trim();
+    const message = document.getElementById('cf-message').value.trim();
+    const status = document.getElementById('cf-status');
+
+    if (!name || !email || !message) {
+        status.textContent = 'Please fill in all fields.';
+        status.className = 'cf-status error';
+        return;
+    }
+
+    try {
+        const res = await fetch('http://localhost:8001/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, message })
+        });
+
+        if (res.ok) {
+            status.textContent = 'Message sent successfully!';
+            status.className = 'cf-status success';
+            document.getElementById('cf-name').value = '';
+            document.getElementById('cf-email').value = '';
+            document.getElementById('cf-message').value = '';
+        } else {
+            const data = await res.json();
+            if (Array.isArray(data.detail)) {
+                // FastAPI validation error (e.g. invalid email)
+                status.textContent = data.detail[0].msg;
+            } else {
+                status.textContent = data.detail || 'Something went wrong.';
+            }
+            status.className = 'cf-status error';
+        }
+    } catch (err) {
+        status.textContent = 'Could not connect to the server.';
+        status.className = 'cf-status error';
+    }
+}
+</script>
+</body>
+</html>
