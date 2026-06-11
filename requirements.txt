@@ -2,3 +2,13 @@ asgiref==3.11.1
 Django==6.0.6
 pillow==12.2.0
 sqlparse==0.5.5
+
+pip~=26.1
+typing_extensions~=4.15.0
+pydantic~=2.13.4
+starlette~=1.2.1
+fastapi~=0.136.3
+pydantic_core~=2.46.4
+anyio~=4.13.0
+idna~=3.18
+SQLAlchemy~=2.0.50

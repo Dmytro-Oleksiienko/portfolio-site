@@ -10,7 +10,7 @@ class Profile(models.Model):
     github = models.URLField()
     linkedin = models.URLField()
     location = models.CharField(max_length=30)
-    is_avalible = models.BooleanField(default=True)
+    is_available = models.BooleanField(default=True)
     cv_file = models.FileField(upload_to='cv_file', blank=True)
 
     def __str__(self):
