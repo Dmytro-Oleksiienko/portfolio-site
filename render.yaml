@@ -7,7 +7,7 @@ databases:
 services:
   # Django — main portfolio site
   - type: web
-    name: portfolio-django
+    name: oleksiienko-portfolio
     runtime: python
     plan: free
     buildCommand: "./build.sh"
