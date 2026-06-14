@@ -41,6 +41,11 @@ portfolio_site/
 │       ├── main.py
 │       ├── models.py
 │       └── database.py
+├── Dockerfile                  # Multi-target Docker image
+├── docker-compose.yml          # Container orchestration
+├── docker-entrypoint.sh        # Django startup script
+├── .env.docker                 # Docker environment variables
+├── .dockerignore
 ├── requirements.txt
 ├── .env.example
 └── .gitignore
@@ -48,15 +53,57 @@ portfolio_site/
 
 ## Getting Started
 
+### Option 1: Docker (Recommended)
+
+The easiest way to run the project — no need to install Python or PostgreSQL locally.
+
+**Prerequisites:** [Docker](https://www.docker.com/products/docker-desktop/) installed and running.
+
+```bash
+# Clone the repository
+git clone https://github.com/Dmytro-Oleksiienko/portfolio-site.git
+cd portfolio-site
+
+# Start all services
+docker compose up --build
+```
+
+That's it! The app will be available at:
+
+- 🌐 **Site**: http://localhost:8000
+- 🔧 **Admin panel**: http://localhost:8000/admin
+- 📬 **Contact API**: http://localhost:8001
+
+```bash
+# Run in background
+docker compose up -d --build
+
+# View logs
+docker compose logs -f
+
+# Stop all services
+docker compose down
+
+# Stop and remove all data
+docker compose down -v
+```
+
+> **Note:** Docker uses `.env.docker` for configuration. Edit it to change default credentials.
+
+---
+
+### Option 2: Local Setup
+
 ### Prerequisites
 
 - Python 3.10+
+- PostgreSQL
 
 ### Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/portfolio-site.git
+git clone https://github.com/Dmytro-Oleksiienko/portfolio-site.git
 cd portfolio-site
 
 # Create and activate virtual environment
@@ -118,11 +165,7 @@ The contact API will be available at `http://127.0.0.1:8001`.
 | `DB_NAME` | PostgreSQL database name | `portfolio` |
 | `DB_USER` | PostgreSQL user | `postgres` |
 | `DB_PASSWORD` | PostgreSQL password | Empty |
-| `DB_HOST` | PostgreSQL host | `localhost` |
+| `DB_HOST` | PostgreSQL host | `localhost` (`db` in Docker) |
 | `DB_PORT` | PostgreSQL port | `5432` |
 | `DATABASE_URL` | FastAPI database URL | `postgresql://postgres@localhost:5432/portfolio` |
 | `CORS_ORIGINS` | Comma-separated CORS origins | `*` |
-
-## License
-
-This project is open source and available under the [MIT License](LICENSE).

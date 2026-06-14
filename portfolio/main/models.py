@@ -38,8 +38,8 @@ class Project(models.Model):
 
 class Experience(models.Model):
     name = models.CharField()
-    faculty = models.CharField(max_length=30, blank=True)
-    department = models.CharField(max_length=30, blank=True)
+    faculty = models.CharField(max_length=255, blank=True)
+    department = models.CharField(max_length=255, blank=True)
     start_year = models.IntegerField(default=2022)
     end_year = models.IntegerField(default=2026)
     order = models.IntegerField(default=0)
