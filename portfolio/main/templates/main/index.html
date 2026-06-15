@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -231,7 +232,7 @@
         {% elif profile.photo %}
             <img src="{{ profile.photo.url }}" alt="{{ profile.name }}">
         {% else %}
-            <i class="ti ti-user avatar-placeholder"></i>
+            <img src="{% static 'images/profile.jpg' %}" alt="{{ profile.name }}">
         {% endif %}
     </div>
     <div class="hero-text">
