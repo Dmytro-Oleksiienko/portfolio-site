@@ -226,10 +226,10 @@
 
 <div class="hero" id="about">
     <div class="avatar">
-        {% if profile.photo %}
-            <img src="{{ profile.photo.url }}" alt="{{ profile.name }}">
-        {% elif profile.photo_url %}
+        {% if profile.photo_url %}
             <img src="{{ profile.photo_url }}" alt="{{ profile.name }}">
+        {% elif profile.photo %}
+            <img src="{{ profile.photo.url }}" alt="{{ profile.name }}">
         {% else %}
             <i class="ti ti-user avatar-placeholder"></i>
         {% endif %}
