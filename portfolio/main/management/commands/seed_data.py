@@ -14,9 +14,10 @@ class Command(BaseCommand):
             User.objects.create_superuser('admin', 'admin@example.com', 'admin')
             self.stdout.write(self.style.SUCCESS('Superuser created (admin:admin)'))
 
-        # Create Profile
-        if not Profile.objects.exists():
-            Profile.objects.create(
+        # Create or update Profile
+        profile = Profile.objects.first()
+        if not profile:
+            profile = Profile.objects.create(
                 name='Dmytro Oleksiienko',
                 bio='Junior Python developer actively building pet projects to sharpen my skills in FastAPI, Django, and PostgreSQL. Open to new opportunities and eager to grow in a team',
                 role='Software Developer',
@@ -28,6 +29,11 @@ class Command(BaseCommand):
                 photo_url='https://avatars.githubusercontent.com/u/146471958?v=4',
             )
             self.stdout.write(self.style.SUCCESS('Profile created'))
+        else:
+            if not profile.photo_url:
+                profile.photo_url = 'https://avatars.githubusercontent.com/u/146471958?v=4'
+                profile.save()
+                self.stdout.write(self.style.SUCCESS('Profile updated with photo_url'))
 
         # Create Skills
         skills = [
