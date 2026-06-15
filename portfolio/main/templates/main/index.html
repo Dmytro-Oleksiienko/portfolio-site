@@ -228,6 +228,8 @@
     <div class="avatar">
         {% if profile.photo %}
             <img src="{{ profile.photo.url }}" alt="{{ profile.name }}">
+        {% elif profile.photo_url %}
+            <img src="{{ profile.photo_url }}" alt="{{ profile.name }}">
         {% else %}
             <i class="ti ti-user avatar-placeholder"></i>
         {% endif %}
@@ -347,7 +349,7 @@ async function sendMessage() {
     }
 
     try {
-        const res = await fetch('http://localhost:8001/contact', {
+        const res = await fetch('{{ fastapi_url }}/contact', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email, message })

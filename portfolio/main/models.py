@@ -4,7 +4,8 @@ from django.db import models
 class Profile(models.Model):
     name = models.CharField(max_length=30)
     bio = models.TextField()
-    photo = models.ImageField(upload_to='profile_pics')
+    photo = models.ImageField(upload_to='profile_pics', blank=True, null=True)
+    photo_url = models.URLField(blank=True, help_text='External photo URL (e.g. GitHub avatar)')
     role = models.CharField(max_length=50)
     email = models.EmailField()
     github = models.URLField()

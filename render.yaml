@@ -23,6 +23,8 @@ services:
         value: "False"
       - key: PYTHON_VERSION
         value: "3.12.7"
+      - key: FASTAPI_URL
+        value: "https://portfolio-fastapi-uk5o.onrender.com"
 
   # FastAPI — contact form API
   - type: web
@@ -38,3 +40,5 @@ services:
           property: connectionString
       - key: PYTHON_VERSION
         value: "3.12.7"
+      - key: CORS_ORIGINS
+        value: "https://portfolio-django-2h9f.onrender.com,https://oleksiienko-portfolio.onrender.com"

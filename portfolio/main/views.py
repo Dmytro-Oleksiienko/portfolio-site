@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render
 from .models import Project, Profile, Experience, Skill
 
@@ -13,6 +14,7 @@ def index(request):
         'skills': skills,
         'projects': projects,
         'experience': experience,
+        'fastapi_url': os.environ.get('FASTAPI_URL', 'http://localhost:8001'),
     }
 
     return render(request, 'main/index.html', context)

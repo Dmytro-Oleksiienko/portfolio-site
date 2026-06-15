@@ -1,7 +1,5 @@
 import os
-import requests
 from django.core.management.base import BaseCommand
-from django.core.files.base import ContentFile
 from main.models import Profile, Skill, Project, Experience
 from django.contrib.auth.models import User
 
@@ -18,24 +16,17 @@ class Command(BaseCommand):
 
         # Create Profile
         if not Profile.objects.exists():
-            profile = Profile(
+            Profile.objects.create(
                 name='Dmytro Oleksiienko',
-                bio='Software Engineer passionate about web development, backend engineering, and creating reliable scalable systems. Always eager to learn new technologies and build cool things.',
+                bio='Junior Python developer actively building pet projects to sharpen my skills in FastAPI, Django, and PostgreSQL. Open to new opportunities and eager to grow in a team',
                 role='Software Developer',
-                email='dmytro@example.com',
+                email='dmytro.oleksiienko@icloud.com',
                 github='https://github.com/Dmytro-Oleksiienko',
-                linkedin='https://linkedin.com/in/dmytro-oleksiienko',
-                location='Ukraine',
-                is_available=True
+                linkedin='https://linkedin.com/in/dmytro-oleksiienko/',
+                location='Kharkiv, Ukraine',
+                is_available=True,
+                photo_url='https://avatars.githubusercontent.com/u/146471958?v=4',
             )
-            
-            # Download avatar
-            avatar_url = 'https://avatars.githubusercontent.com/u/146471958?v=4'
-            response = requests.get(avatar_url)
-            if response.status_code == 200:
-                profile.photo.save('avatar.jpg', ContentFile(response.content), save=False)
-                
-            profile.save()
             self.stdout.write(self.style.SUCCESS('Profile created'))
 
         # Create Skills
