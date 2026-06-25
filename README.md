@@ -9,6 +9,7 @@ A personal portfolio website built with **Django** and **FastAPI**.
 - **Database**: PostgreSQL (Django ORM + SQLAlchemy)
 - **Frontend**: Vanilla HTML/CSS/JS with Tabler Icons
 - **Design**: Dark theme, responsive layout, matrix grid background
+- **Hosting**: Railway
 
 ## Features
 
@@ -41,8 +42,10 @@ portfolio_site/
 │       ├── main.py
 │       ├── models.py
 │       └── database.py
+├── railway.toml                # Railway config (Django service)
+├── railway-fastapi.toml        # Railway config (FastAPI service)
 ├── Dockerfile                  # Multi-target Docker image
-├── docker-compose.yml          # Container orchestration
+├── docker-compose.yml          # Local container orchestration
 ├── docker-entrypoint.sh        # Django startup script
 ├── .env.docker                 # Docker environment variables
 ├── .dockerignore
@@ -53,9 +56,51 @@ portfolio_site/
 
 ## Getting Started
 
-### Option 1: Docker (Recommended)
+### Option 1: Deploy to Railway (Production)
 
-The easiest way to run the project — no need to install Python or PostgreSQL locally.
+Deploy the portfolio to [Railway](https://railway.com) — no cold starts, free tier with $5/month credits.
+
+#### Step 1: Create a Railway project
+
+1. Go to [railway.com](https://railway.com) and sign in with GitHub
+2. Click **"New Project"** → **"Deploy from GitHub repo"**
+3. Select your `portfolio-site` repository
+
+#### Step 2: Add PostgreSQL database
+
+1. In your Railway project, click **"+ New"** → **"Database"** → **"Add PostgreSQL"**
+2. Railway will automatically create a `DATABASE_URL` variable
+
+#### Step 3: Configure the Django service
+
+1. The first service created from your repo will use `railway.toml` by default (Django)
+2. Go to the service **Settings** → **Variables** and add:
+   - `DJANGO_SECRET_KEY` — generate a secure random string
+   - `DJANGO_DEBUG` — set to `False`
+   - `DATABASE_URL` — reference the PostgreSQL plugin variable (`${{Postgres.DATABASE_URL}}`)
+   - `FASTAPI_URL` — the public URL of your FastAPI service (set after Step 4)
+
+#### Step 4: Add the FastAPI service
+
+1. In the same project, click **"+ New"** → **"GitHub Repo"** → select the same repo
+2. Go to the new service's **Settings** → **Config as Code Path** → set to `railway-fastapi.toml`
+3. Add environment variables:
+   - `DATABASE_URL` — reference the PostgreSQL plugin variable (`${{Postgres.DATABASE_URL}}`)
+   - `CORS_ORIGINS` — set to the Django service's public URL (e.g., `https://your-django-service.up.railway.app`)
+
+#### Step 5: Generate domains
+
+1. For each service, go to **Settings** → **Networking** → **"Generate Domain"**
+2. Update `FASTAPI_URL` on the Django service with the FastAPI domain
+3. Update `CORS_ORIGINS` on the FastAPI service with the Django domain
+
+That's it! Both services will auto-deploy on every push to your GitHub repo.
+
+---
+
+### Option 2: Docker (Local Development)
+
+The easiest way to run the project locally — no need to install Python or PostgreSQL.
 
 **Prerequisites:** [Docker](https://www.docker.com/products/docker-desktop/) installed and running.
 
@@ -92,7 +137,7 @@ docker compose down -v
 
 ---
 
-### Option 2: Local Setup
+### Option 3: Local Setup
 
 ### Prerequisites
 
@@ -159,13 +204,15 @@ The contact API will be available at `http://127.0.0.1:8001`.
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `DJANGO_SECRET_KEY` | Django secret key | Dev fallback (insecure) |
+| `DJANGO_SECRET_KEY` | Django secret key | *required* |
 | `DJANGO_DEBUG` | Enable debug mode | `True` |
 | `DJANGO_ALLOWED_HOSTS` | Comma-separated hosts | Empty |
+| `RAILWAY_PUBLIC_DOMAIN` | Railway public domain (auto-set by Railway) | — |
 | `DB_NAME` | PostgreSQL database name | `portfolio` |
 | `DB_USER` | PostgreSQL user | `postgres` |
 | `DB_PASSWORD` | PostgreSQL password | Empty |
 | `DB_HOST` | PostgreSQL host | `localhost` (`db` in Docker) |
 | `DB_PORT` | PostgreSQL port | `5432` |
-| `DATABASE_URL` | FastAPI database URL | `postgresql://postgres@localhost:5432/portfolio` |
+| `DATABASE_URL` | Full database URL (Railway/FastAPI) | `postgresql://postgres@localhost:5432/portfolio` |
 | `CORS_ORIGINS` | Comma-separated CORS origins | `*` |
+| `FASTAPI_URL` | URL of the FastAPI contact service | `http://localhost:8001` |

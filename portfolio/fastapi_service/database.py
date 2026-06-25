@@ -7,7 +7,7 @@ DATABASE_URL = os.environ.get(
     "postgresql://localhost:5432/portfolio"
 )
 
-# Render uses postgres:// but SQLAlchemy requires postgresql://
+# Railway and Render use postgres:// but SQLAlchemy requires postgresql://
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
