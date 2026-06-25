@@ -1,4 +1,5 @@
 # Railway configuration for the FastAPI contact service
+#
 # Use this file when deploying FastAPI as a separate Railway service.
 # Rename to railway.toml in the FastAPI service's settings, or
 # set the config path in Railway dashboard to "railway-fastapi.toml"
@@ -13,7 +14,7 @@ nixPkgs = ["python312", "gcc", "postgresql"]
 cmds = ["pip install -r requirements.txt"]
 
 [deploy]
-startCommand = "cd portfolio && uvicorn fastapi_service.main:app --host 0.0.0.0 --port $PORT"
+startCommand = "uvicorn --app-dir portfolio fastapi_service.main:app --host 0.0.0.0 --port $PORT"
 healthcheckPath = "/"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
