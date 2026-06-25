@@ -12,13 +12,12 @@ cmds = ["pip install -r requirements.txt"]
 [build.nixpacksPlan.phases.build]
 cmds = [
   "python portfolio/manage.py collectstatic --noinput",
-    "python portfolio/manage.py migrate --noinput",
-      "python portfolio/manage.py seed_data"
-      ]
+  "python portfolio/manage.py migrate --noinput",
+  "python portfolio/manage.py seed_data"
+]
 
-      [deploy]
-      startCommand = "gunicorn --pythonpath portfolio portfolio.wsgi:application --bind 0.0.0.0:$PORT"
-      healthcheckPath = "/"
-      restartPolicyType = "ON_FAILURE"
-      restartPolicyMaxRetries = 10
-      
+[deploy]
+startCommand = "gunicorn --pythonpath portfolio portfolio.wsgi:application --bind 0.0.0.0:$PORT"
+healthcheckPath = "/"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
